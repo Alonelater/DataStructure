@@ -20,26 +20,26 @@ public class SingleLinkedListDemo {
     public static void main(String[] args) {
 
 //        //创建单链表  给与头结点
-        SingleLinkedList singleLinkedList = new SingleLinkedList(new HeroNode(0, "头结点", "小头"));
+        //SingleLinkedList singleLinkedList = new SingleLinkedList(new HeroNode(0, "头结点", "小头"));
 
         SingleLinkedList singleLinkedList1 = new SingleLinkedList(new HeroNode(0, "有序头结点", "有序小头"));
 //
 //        //创建节点 插入单链表
-        singleLinkedList.add(new HeroNode(1, "宋江", "及时雨"));
-        singleLinkedList.add(new HeroNode(3, "吴用", "智多星"));
-        singleLinkedList.add(new HeroNode(2, "林冲", "豹子头"));
-        singleLinkedList.add(new HeroNode(4, "鲁智深", "花和尚"));
+        //singleLinkedList.add(new HeroNode(1, "宋江", "及时雨"));
+//        singleLinkedList.add(new HeroNode(3, "吴用", "智多星"));
+//        singleLinkedList.add(new HeroNode(2, "林冲", "豹子头"));
+//        singleLinkedList.add(new HeroNode(4, "鲁智深", "花和尚"));
 //
-        singleLinkedList.showList();
+        //singleLinkedList.showList();
         System.out.println("------------------------------");
 //
 //        //创建节点 插入单链表
-        singleLinkedList1.addOrderBy(new HeroNode(1, "宋江", "及时雨2"));
-        singleLinkedList1.addOrderBy(new HeroNode(3, "林冲", "豹子头2"));
-        singleLinkedList1.addOrderBy(new HeroNode(4, "鲁智深", "花和尚"));
-        singleLinkedList1.addOrderBy(new HeroNode(2, "离骚", "鼓上骚"));
+//        singleLinkedList1.addOrderBy(new HeroNode(1, "宋江", "及时雨2"));
+//        singleLinkedList1.addOrderBy(new HeroNode(3, "林冲", "豹子头2"));
+//        singleLinkedList1.addOrderBy(new HeroNode(4, "鲁智深", "花和尚"));
+//        singleLinkedList1.addOrderBy(new HeroNode(2, "离骚", "鼓上骚"));
 //
-        singleLinkedList1.showList();
+        //singleLinkedList1.showList();
 //        singleLinkedList1.addOrderBy(new HeroNode(2, "林冲", "豹子头3"));
 //        singleLinkedList1.showList();
 //        System.out.println("修改节点信息之后链表信息如下");
@@ -53,16 +53,26 @@ public class SingleLinkedListDemo {
 //        int listLength2 = singleLinkedList.getListLength();
 //        System.out.println(listLength);
 //        System.out.println(listLength2);
-        System.out.println("得到倒数第几个节点");
-        HeroNode heroNodeByLastIndex = singleLinkedList1.findHeroNodeByLastIndex(2);
-        System.out.println(heroNodeByLastIndex);
-        System.out.println("反转单链表");
-        SingleLinkedList singleLinkedList2 = SingleLinkedList.reverseListByTeacher(singleLinkedList);
-        singleLinkedList2.showList();
-        System.out.println("反转打印单链表");
-        SingleLinkedList.reversePrint(singleLinkedList1);
+//        System.out.println("得到倒数第几个节点");
+//        HeroNode heroNodeByLastIndex = singleLinkedList1.findHeroNodeByLastIndex(2);
+//        System.out.println(heroNodeByLastIndex);
+//        System.out.println("反转单链表");
+//        SingleLinkedList singleLinkedList2 = SingleLinkedList.reverseListByTeacher(singleLinkedList);
+//        singleLinkedList2.showList();
+//        System.out.println("反转打印单链表");
+//        SingleLinkedList.reversePrint(singleLinkedList);
+        SingleLinkedList singleLinkedList2 = new SingleLinkedList(new HeroNode(0, "有序头结点1", "有序小头1"));
+        singleLinkedList2.addOrderBy(new HeroNode(1, "宋江", "及时雨2"));
+        singleLinkedList2.addOrderBy(new HeroNode(3, "林冲", "豹子头2"));
 
 
+        SingleLinkedList singleLinkedList3 = new SingleLinkedList(new HeroNode(0, "有序头结点2", "有序小头2"));
+        singleLinkedList3.addOrderBy(new HeroNode(4, "鲁智深", "花和尚"));
+        singleLinkedList3.addOrderBy(new HeroNode(2, "离骚", "鼓上骚"));
+
+
+        SingleLinkedList linkedList = SingleLinkedList.mergeList(singleLinkedList2, singleLinkedList3);
+        linkedList.showList();
     }
 }
 
@@ -378,7 +388,8 @@ class SingleLinkedList {
         //如果单链表为空或者只要一个元素 直接输出
         HeroNode headNode = list.getHeadNode();
         if (headNode.getNext()==null||headNode.getNext().getNext()==null){
-            System.out.println(headNode.getNext()==null?"单链表为空，无需打印":headNode.getNext().getNext());
+            System.out.println(headNode.getNext()==null?"单链表为空，无需打印":headNode.getNext());
+            return;
         }
         //开始遍历
         HeroNode temp = headNode.getNext();
@@ -400,6 +411,64 @@ class SingleLinkedList {
             }
 
         }
+    }
+
+
+    public static  SingleLinkedList mergeList(SingleLinkedList list1,SingleLinkedList list2){
+
+        //创建合并后的单链表
+        SingleLinkedList linkedList = new SingleLinkedList(new HeroNode(0,"",""));
+        //分别取出三个单链表的头
+        HeroNode head1 = list1.getHeadNode();
+        HeroNode head2 = list2.getHeadNode();
+        HeroNode newHeadNode = linkedList.getHeadNode();
+
+        HeroNode temp1 = head1.getNext();
+        HeroNode temp2 = head2.getNext();
+        HeroNode next =  null;
+
+        int count =1;
+        while (true){
+            if (count==1){
+                if (temp1==null||temp2==null){
+                    System.out.println("有一个单链表为空,直接返回非空链表");
+                    return temp1.getNext()==null?list2:list1;
+                }
+                count++;
+            }
+
+            //开始比较  如果谁小谁一直遍历 大的链表指针不动 直到一方为空时直接将大的直接插入末尾 所以前提传进来的两个链表一定要为有序链表
+            if (temp2!=null&&temp1.getNumber()>temp2.getNumber()){
+                //要注意 我们这里不要犯错 我们拿到了当前比较出来的那个小的 我们 我们需要将当前节点的后面节点信息保存给一个临时变量
+                next = temp2.getNext();
+                //temp1更大  那就temp2一直后移 直到遍历完temp2或者temp2更大就调转
+                newHeadNode.setNext(temp2);
+                //将新链表的头结点也往后移 省的还要遍历
+                newHeadNode = newHeadNode.getNext();
+                temp2= next;
+
+            }else if (temp1!=null&&temp2.getNumber()>temp1.getNumber()){
+                //temp2更大  那就temp1一直后移 直到遍历完temp1或者temp1更大就调转
+                next = temp1.getNext();
+                newHeadNode.setNext(temp1);
+                //将新链表的头结点也往后移 省的还要遍历
+                newHeadNode = newHeadNode.getNext();
+                temp1=next;
+            }else {
+                //如果list1遍历完了还没有大于list没有遍历完的部门  那就将list2剩余的部分直接加载新链表上
+                if (temp1==null){
+                    newHeadNode.setNext(temp2.getNext());
+                    break;
+                }
+                if (temp2==null){
+                    newHeadNode.setNext(temp1.getNext());
+                    break;
+                }
+            }
+
+        }
+
+        return linkedList;
     }
 
 }
