@@ -64,12 +64,15 @@ public class SingleLinkedListDemo {
         SingleLinkedList singleLinkedList2 = new SingleLinkedList(new HeroNode(0, "有序头结点1", "有序小头1"));
         singleLinkedList2.addOrderBy(new HeroNode(1, "宋江", "及时雨2"));
         singleLinkedList2.addOrderBy(new HeroNode(3, "林冲", "豹子头2"));
+        singleLinkedList2.addOrderBy(new HeroNode(5, "林冲2", "豹子头3"));
+        singleLinkedList2.addOrderBy(new HeroNode(6, "林冲3", "豹子头4"));
 
 
         SingleLinkedList singleLinkedList3 = new SingleLinkedList(new HeroNode(0, "有序头结点2", "有序小头2"));
         singleLinkedList3.addOrderBy(new HeroNode(4, "鲁智深", "花和尚"));
         singleLinkedList3.addOrderBy(new HeroNode(2, "离骚", "鼓上骚"));
 
+        singleLinkedList3.showList();
 
         SingleLinkedList linkedList = SingleLinkedList.mergeList(singleLinkedList2, singleLinkedList3);
         linkedList.showList();
@@ -336,7 +339,7 @@ class SingleLinkedList {
             temp = temp.getNext();
 
         }
-       //现在已经有了全部的节点信息 就是反向遍历拼装了
+        //现在已经有了全部的节点信息 就是反向遍历拼装了
         for (int i = count - 1; i > 0; i--) {
             HeroNode heroNode = map.get(i);
             newList.add(heroNode);
@@ -367,7 +370,7 @@ class SingleLinkedList {
                 //注意我们这里要有一个变量帮我们保存当前节点的后面节点
                 tempNext = temp.getNext();
                 //由于我们每次是放在新链表的头部  所以我们需要先将得到的当前的节点的next域先和原来的新链表已有的数据相关关联  不然先跟头结点关联就会丢失数据
-                //不要将下面的这个代码想象成是添加第一个数据 那样很容易混乱 我们要想这这时候新链表有很多数据了 所以我们在添加在这些数据头部的时候我们就要先将后面的关联到当前节点
+                //不要将下面的这个代码想象成是添加第一个数据  而且头结点是没有往下遍历的 那样很容易混乱 我们要想这这时候新链表有很多数据了 所以我们在添加在这些数据头部的时候我们就要先将后面的关联到当前节点
                 //好好体会这个代码  以前学数据结构总是不明白这里 其实只是往多了情况想  要先关联
                 temp.setNext(newHeadNode.getNext());
                 //上面关联好了 我们就要关联新节点和当前节点的关系了
@@ -438,18 +441,20 @@ class SingleLinkedList {
             }
 
             //开始比较  如果谁小谁一直遍历 大的链表指针不动 直到一方为空时直接将大的直接插入末尾 所以前提传进来的两个链表一定要为有序链表
-            if (temp2!=null&&temp1.getNumber()>temp2.getNumber()){
+            if ((temp2!=null&&temp1!=null)&&temp1.getNumber()>temp2.getNumber()){
                 //要注意 我们这里不要犯错 我们拿到了当前比较出来的那个小的 我们 我们需要将当前节点的后面节点信息保存给一个临时变量
                 next = temp2.getNext();
                 //temp1更大  那就temp2一直后移 直到遍历完temp2或者temp2更大就调转
+                temp2.setNext(null);
                 newHeadNode.setNext(temp2);
                 //将新链表的头结点也往后移 省的还要遍历
                 newHeadNode = newHeadNode.getNext();
                 temp2= next;
 
-            }else if (temp1!=null&&temp2.getNumber()>temp1.getNumber()){
+            }else if ((temp2!=null&&temp1!=null)&&temp2.getNumber()>temp1.getNumber()){
                 //temp2更大  那就temp1一直后移 直到遍历完temp1或者temp1更大就调转
                 next = temp1.getNext();
+                temp1.setNext(null);
                 newHeadNode.setNext(temp1);
                 //将新链表的头结点也往后移 省的还要遍历
                 newHeadNode = newHeadNode.getNext();
@@ -457,11 +462,13 @@ class SingleLinkedList {
             }else {
                 //如果list1遍历完了还没有大于list没有遍历完的部门  那就将list2剩余的部分直接加载新链表上
                 if (temp1==null){
-                    newHeadNode.setNext(temp2.getNext());
+
+                    newHeadNode.setNext(temp2);
                     break;
                 }
                 if (temp2==null){
-                    newHeadNode.setNext(temp1.getNext());
+
+                    newHeadNode.setNext(temp1);
                     break;
                 }
             }
